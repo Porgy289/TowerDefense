@@ -39,7 +39,7 @@ public class Systems extends JComponent
 
         this.setPreferredSize( new Dimension( 400, 400 ) );
 
-        this.map = new TerrainLayout();
+        this.map = new MapLayout();
         levelChanger = new LevelChanger();
 
         lives = 100;
@@ -154,9 +154,9 @@ public class Systems extends JComponent
     public void tick()
     {
         Enemy released = null;
-        if( !LevelChanger.currentLevelIsDone() )
+        if( !levelChanger.currentLevelIsDone() )
         {
-            released = LevelChanger.tickCurrentLevel() ;
+            released = levelChanger.tickCurrentLevel() ;
         }
         if( released != null )
         {
@@ -231,9 +231,9 @@ public class Systems extends JComponent
 
         // CHECK IF YOU BEAT THE LEVEL
         //Peyton finish this
-        if( enemies.size() == 0 && LevelChanger.currentLevelIsDone() )
+        if( enemies.size() == 0 && levelChanger.currentLevelIsDone() )
         {
-            boolean beaten = LevelChanger.nextLevel();
+            boolean beaten = levelChanger.nextLevel();
             runningLevel = false;
             projectiles.clear();
             if( beaten )
@@ -313,7 +313,7 @@ public class Systems extends JComponent
         }
 
         g.drawString( "Lives: " + lives, 10, 395 );
-        g.drawString( "Level: " + LevelChanger.getLevelNumber(), 150, 395 );
+        g.drawString( "Level: " + levelChanger.getLevelNumber(), 150, 395 );
         g.drawString( "Money: $" + money, 290, 395 );
         if( !runningLevel)
         {
