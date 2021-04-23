@@ -9,18 +9,18 @@ public class SpreadShot extends Tower
         super( x, y, 60, 50 );
     }
 
-    public void shoot(ArrayList<Projectiles> projectiles, Enemy target )
+    public void shoot(ArrayList<Projectiles> projectile, Enemies target )
     {
         double speed = 3;
         double rtspeed = speed * Math.sqrt( 2 ) / 2;
-        projectiles.add( new Projectile( x, y, 2, 0 ) );
-        projectiles.add( new Projectile( x, y, -2, 0 ) );
-        projectiles.add( new Projectile( x, y, 0, 2 ) );
-        projectiles.add( new Projectile( x, y, 0, -2 ) );
-        projectiles.add( new Projectile( x, y, rtspeed, rtspeed ) );
-        projectiles.add( new Projectile( x, y, rtspeed, -rtspeed ) );
-        projectiles.add( new Projectile( x, y, -rtspeed, -rtspeed ) );
-        projectiles.add( new Projectile( x, y, -rtspeed, rtspeed ) );
+        projectile.add( new Projectiles( x, y, 2, 0 ) );
+        projectile.add( new Projectiles( x, y, -2, 0 ) );
+        projectile.add( new Projectiles( x, y, 0, 2 ) );
+        projectile.add( new Projectiles( x, y, 0, -2 ) );
+        projectile.add( new Projectiles( x, y, rtspeed, rtspeed ) );
+        projectile.add( new Projectiles( x, y, rtspeed, -rtspeed ) );
+        projectile.add( new Projectiles( x, y, -rtspeed, -rtspeed ) );
+        projectile.add( new Projectiles( x, y, -rtspeed, rtspeed ) );
     }
 
     public void draw( Graphics2D g )
