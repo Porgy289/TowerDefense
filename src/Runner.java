@@ -6,12 +6,12 @@ public class Runner {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        Component component = new Component();
+        Systems system = new Systems();
 
-        frame.add( component );
+        frame.add( system );
         frame.pack();
         frame.setResizable( false );
-        component.requestFocusInWindow();
+        system.requestFocusInWindow();
 
         frame.setVisible( true );
 
