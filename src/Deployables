@@ -16,7 +16,7 @@ public abstract class Deployables
         return width + other.width > distanceTo( other );
     }
 
-    public double distanceTo( MapItem other )
+    public double distanceTo( Deployables other )
     {
         double dx = x - other.x;
         double dy = y - other.y;
