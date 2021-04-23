@@ -1,1 +1,13 @@
+import java.awt.*;
+
+
+public abstract class Terrain
+{
+    public abstract void draw( Graphics2D g );
+    public abstract void move( Enemy e );
+    public abstract void place( Enemy e );
+    public abstract boolean isPast( Enemy e );
+    public abstract boolean isFurther( Enemy a, Enemy b );
+    public abstract boolean canPlace( Towers t );
+}
 
