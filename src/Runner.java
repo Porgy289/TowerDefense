@@ -1,20 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author peyto
- */
+
+import javax.swing.*;
+
 public class Runner {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        JFrame frame = new JFrame();
+        Component component = new Component();
+
+        frame.add( component );
+        frame.pack();
+        frame.setResizable( false );
+        component.requestFocusInWindow();
+
+        frame.setVisible( true );
+
+        while( true )
+        {
+            try { Thread.sleep( 50 ); }
+            catch( Exception e ){}
+            frame.repaint();
     }
     
 }
