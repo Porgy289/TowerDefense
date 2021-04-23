@@ -12,21 +12,21 @@ public abstract class Towers extends Deployables
         this.counter = 0;
     }
 
-    public void tick( Terrain map, ArrayList<Enemies> enemy, ArrayList<Projectiles> projectile)
+    public void tick( Terrain map, ArrayList<Enemy> enemies, ArrayList<Projectile> projectiles)
     {
         if( counter > 0 )
         {
             counter--;
         }
-        Enemies closest = getFurthestEnemyInRange( map, enemy );
+        Enemy closest = getFurthestEnemyInRange( map, enemies );
         if( closest != null && canShoot() )
         {
             counter = frequency;
-            shoot( projectile, closest );
+            shoot( projectiles, closest );
         }
     }
 
-    public Enemies getFurthestEnemiesInRange( Terrain map, ArrayList<Enemies> enemy )
+    public Enemy getFurthestEnemiesInRange( Terrain map, ArrayList<Enemy> enemies )
     {
         Enemies toShoot = null;
         for( Enemies b : enemy )
@@ -49,7 +49,7 @@ public abstract class Towers extends Deployables
         return counter == 0;
     }
 
-    public abstract void shoot( ArrayList<Projectiles> projectile, Enemies target );
+    public abstract void shoot( ArrayList<Projectile> projectiles, Enemies target );
 
     public int getRange()
     {
