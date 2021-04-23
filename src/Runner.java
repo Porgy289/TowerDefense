@@ -4,9 +4,6 @@ import javax.swing.*;
 
 public class Runner {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         Component component = new Component();
