@@ -1,7 +1,7 @@
 public class LevelChanger
 {
     private int levelNumber;
-    private Level currentLevel;
+    private LevelStarter currentLevel;
 
     public LevelChanger()
     {
@@ -32,7 +32,7 @@ public class LevelChanger
         return currentLevel.tick();
     }
 
-    static Level getObject( int levelNumber )
+    static LevelStarter getObject( int levelNumber )
     {
         switch ( levelNumber )
         {
