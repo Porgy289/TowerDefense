@@ -1,0 +1,65 @@
+import java.awt.*;
+
+
+public class MayLayout extends Terrain
+{
+    public void draw( Graphics2D g )
+    {
+        g.setColor( Color.GREEN );
+        g.fillRect(0,0,400,400);
+        g.setColor( Color.darkGray);
+        g.fillRect(90,0,20,300);
+        g.fillRect(90,290,310,20);
+    }
+
+    public void move( Enemy e )
+    {
+
+        if( e.y < 300 ) {
+            e.y += e.getSpeed();
+            return;
+        }
+        e.y = 300;
+        e.x += e.getSpeed();
+    }
+
+    public void place( Enemy e )
+    {
+       e.x = 100;
+       e.y = -20;
+    }
+
+    public boolean isPast( Enemy e )
+    {
+        return e.x >= 415;
+    }
+
+    public boolean isFurther( Enemy e, Enemy b )
+    {
+        if( e.y > b.y )
+        {
+            return true;
+        }
+        else if( e.y < b.y )
+        {
+            return false;
+        }
+        else
+        {
+            return e.x > b.x;
+        }
+    }
+
+    public boolean canPlace( Tower t )
+    {
+        if( t.getX() + t.getWidth() <= 90 )
+        {
+            return true;
+        }
+        if( t.getX() - t.getWidth() < 110 )
+        {
+            return t.getY() - t.getWidth() >= 310;
+        }
+        return t.getY() - t.getWidth() >= 310 || t.getY() + t.getWidth() <= 290;
+    }
+}
