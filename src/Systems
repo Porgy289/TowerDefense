@@ -8,20 +8,18 @@ public class Systems extends JComponent
 {
     private ArrayList<Enemy> EnemyBuffer;
     private ArrayList<Enemy> Enemies;
-
-    private ArrayList<Bullet> bullets;
-    private ArrayList<Bullet> bulletBuffer;
-
-    private ArrayList<Tower> towers;
-    private ArrayList<Tower> towerBuffer;
+    private ArrayList<Projectile> Projectiles;
+    private ArrayList<Projectile> ProjectileBuffer;
+    private ArrayList<Towers> Tower;
+    private ArrayList<Towers> TowerBuffer;
 
     private int currentTowerPrice;
     private Tower currentTower;
 
     private static boolean runningLevel;
-    private LevelManager levelManager;
+    private LevelChanger levelChanger;
 
-    private Map map;
+    private Terrain map;
 
     int money;
 
@@ -30,19 +28,19 @@ public class Systems extends JComponent
     int mouseX;
     int mouseY;
 
-    public Component()
+    public System()
     {
         EnemyBuffer = new ArrayList<>();
         Enemies = new ArrayList<>();
-        towerBuffer = new ArrayList<>();
-        towers = new ArrayList<>();
-        bulletBuffer = new ArrayList<>();
-        bullets = new ArrayList<>();
+        TowerBuffer = new ArrayList<>();
+        Tower = new ArrayList<>();
+        ProjectileBuffer = new ArrayList<>();
+        Projectiles = new ArrayList<>();
 
         this.setPreferredSize( new Dimension( 400, 400 ) );
 
-        this.map = new LMap();
-        levelManager = new LevelManager();
+        this.map = new TerrainLayout();
+        levelChanger = new LevelChanger();
 
         lives = 100;
 
@@ -101,7 +99,7 @@ public class Systems extends JComponent
                     {
                         return;
                     }
-                    currentTower = new PistolTower(mouseX,mouseY);
+                    currentTower = new PeaShooter(mouseX,mouseY);
                     currentTowerPrice = 50;
                     return;
                 }
@@ -111,7 +109,7 @@ public class Systems extends JComponent
                     {
                         return;
                     }
-                    currentTower = new SprayTower(mouseX,mouseY);
+                    currentTower = new SpreadShot(mouseX,mouseY);
                     currentTowerPrice = 75;
                     return;
                 }
@@ -124,25 +122,25 @@ public class Systems extends JComponent
     {
         EnemyBuffer.add( b );
     }
-    public void addTower( Tower t )
+    public void addTower( Towers t )
     {
-        towerBuffer.add( t );
+        TowerBuffer.add( t );
     }
-    public void addBullet( Bullet b )
+    public void addProjectile( Projectile b )
     {
-        bulletBuffer.add( b );
+        ProjectileBuffer.add( b );
     }
 
     private boolean canPlaceCurrentTower()
     {
-        for( Tower t : towerBuffer )
+        for( Towers t : TowerBuffer )
         {
             if( t.intersects( currentTower ) )
             {
                 return false;
             }
         }
-        for( Tower t : towers )
+        for( Towers t : Tower )
         {
             if( t.intersects( currentTower ) )
             {
@@ -157,9 +155,9 @@ public class Systems extends JComponent
     {
         // Release new Enemies the level
         Enemy released = null;
-        if( !levelManager.currentLevelIsDone() )
+        if( !levelChanger.currentLevelIsDone() )
         {
-            released = levelManager.tickCurrentLevel() ;
+            released = levelChanger.tickCurrentLevel() ;
         }
         if( released != null )
         {
@@ -168,9 +166,9 @@ public class Systems extends JComponent
         }
 
         // Tick all of the towers
-        for( Tower t : towers )
+        for( Towers t : Tower )
         {
-            t.tick( map, Enemies, bullets );
+            t.tick( map, Enemies, Projectiles );
         }
 
         // Move each Enemy
@@ -180,31 +178,31 @@ public class Systems extends JComponent
         }
 
         // Tick each projectile
-        for( int i = 0; i < bullets.size(); ++i )
+        for( int i = 0; i < Projectiles.size(); ++i )
         {
-            Bullet b = bullets.get( i );
+            Projectile b = Projectiles.get( i );
             if( b.getX() < 0 || b.getX() > 400 ||
                     b.getY() < 0 || b.getY() > 400 )
             {
-                bullets.remove( i-- );
+                Projectiles.remove( i-- );
             }
             else
             {
                 b.tick();
             }
         }
-        for( Bullet b : bullets )
+        for( Projectile b : Projectiles )
         {
             b.tick();
         }
 
-        for( int i = 0; i < bullets.size(); ++i )
+        for( int i = 0; i < Projectiles.size(); ++i )
         {
             for( int j = 0; j < Enemies.size(); ++j )
             {
-                if( bullets.get(i).intersects(Enemies.get(j)))
+                if( Projectiles.get(i).intersects(Enemies.get(j)))
                 {
-                    bullets.remove(i--);
+                    Projectiles.remove(i--);
                     if(Enemies.get(j).getHit())
                     {
                         Enemies.remove(j--);
@@ -233,11 +231,11 @@ public class Systems extends JComponent
         }
 
         // Check for beating the level
-        if( Enemies.size() == 0 && levelManager.currentLevelIsDone() )
+        if( Enemies.size() == 0 && levelChanger.currentLevelIsDone() )
         {
-            boolean beaten = levelManager.nextLevel();
+            boolean beaten = levelChanger.nextLevel();
             runningLevel = false;
-            bullets.clear();
+            Projectiles.clear();
             if( beaten )
             {
                 System.out.println( "You Win!" );
@@ -246,7 +244,7 @@ public class Systems extends JComponent
         }
     }
 
-    public void paintComponent( Graphics gi )
+    public void paintSystem( Graphics gi )
     {
         // Synchronously move spawned bodies into the actual lists
         for( Enemy b : EnemyBuffer )
@@ -255,17 +253,17 @@ public class Systems extends JComponent
         }
         EnemyBuffer.clear();
 
-        for( Tower t : towerBuffer )
+        for( Towers t : TowerBuffer )
         {
-            towers.add( t );
+            Tower.add( t );
         }
-        towerBuffer.clear();
+        TowerBuffer.clear();
 
-        for( Bullet b : bulletBuffer )
+        for( Projectile b : ProjectileBuffer )
         {
-            bullets.add( b );
+            Projectiles.add( b );
         }
-        bulletBuffer.clear();
+        ProjectileBuffer.clear();
 
         if(runningLevel)
         {
@@ -280,11 +278,11 @@ public class Systems extends JComponent
         {
             b.draw( g );
         }
-        for( Tower t : towers )
+        for( Towers t : Tower )
         {
             t.draw( g );
         }
-        for( Bullet b : bullets )
+        for( Projectile b : Projectiles )
         {
             b.draw( g );
         }
@@ -310,12 +308,12 @@ public class Systems extends JComponent
 
         if( currentTower == null )
         {
-            g.drawString("[P]: $50 Pistol Tower", 10, 30 );
-            g.drawString("[S]: $75 Spray Tower", 10, 50 );
+            g.drawString("[P]: $50 Pea Shooter", 10, 30 );
+            g.drawString("[S]: $75 Spread Shot", 10, 50 );
         }
 
         g.drawString( "Lives: " + lives, 10, 395 );
-        g.drawString( "Level: " + levelManager.getLevelNumber(), 150, 395 );
+        g.drawString( "Level: " + levelChanger.getLevelNumber(), 150, 395 );
         g.drawString( "Money: $" + money, 290, 395 );
         if( !runningLevel)
         {
