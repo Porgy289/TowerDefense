@@ -9,12 +9,12 @@ public class PeaShooter extends Towers
         super( x, y, 100, 50 );
     }
 
-    public void shoot( ArrayList<Projectiles> projectile, Enemies target )
+    public void shoot( ArrayList<Projectile> projectiles, Enemy target )
     {
         double dx = target.x - x;
         double dy = target.y - y;
         double dz = Math.sqrt( dx*dx + dy*dy );
-        projectile.add( new Projectiles( x, y, 8 * dx / dz, 8 * dy / dz ) );
+        projectiles.add( new Projectile( x, y, 8 * dx / dz, 8 * dy / dz ) );
     }
 
     public void draw( Graphics2D g )
