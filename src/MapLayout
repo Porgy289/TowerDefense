@@ -12,45 +12,45 @@ public class MayLayout extends Terrain
         g.fillRect(90,290,310,20);
     }
 
-    public void move( Enemy e )
+    public void move( Enemies b )
     {
 
-        if( e.y < 300 ) {
-            e.y += e.getSpeed();
+        if( b.y < 300 ) {
+            b.y += b.getSpeed();
             return;
         }
-        e.y = 300;
-        e.x += e.getSpeed();
+        b.y = 300;
+        b.x += b.getSpeed();
     }
 
-    public void place( Enemy e )
+    public void place( Enemies b )
     {
-       e.x = 100;
-       e.y = -20;
+       b.x = 100;
+       b.y = -20;
     }
 
-    public boolean isPast( Enemy e )
+    public boolean isPast( Enemies b )
     {
-        return e.x >= 415;
+        return b.x >= 415;
     }
 
-    public boolean isFurther( Enemy e, Enemy b )
+    public boolean isFurther( Enemies a, Enemies b )
     {
-        if( e.y > b.y )
+        if( a.y > b.y )
         {
             return true;
         }
-        else if( e.y < b.y )
+        else if( a.y < b.y )
         {
             return false;
         }
         else
         {
-            return e.x > b.x;
+            return a.x > b.x;
         }
     }
 
-    public boolean canPlace( Tower t )
+    public boolean canPlace( Towers t )
     {
         if( t.getX() + t.getWidth() <= 90 )
         {
